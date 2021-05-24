@@ -42,13 +42,118 @@ var animals = {
 		animals.container.append(li);
 
 	},
+	gallery: $( "#gallery" ),
+	trash: $( "#trash" ),
+	trash_icon: "<a href='link/to/trash/script/when/we/have/js/off' title='Delete this image' class='ui-icon ui-icon-trash'>Delete image</a>",
+	recycle_icon: "<a href='link/to/recycle/script/when/we/have/js/off' title='Recycle this image' class='ui-icon ui-icon-refresh'>Recycle image</a>",
+	
+	initDragging:function(){
+		// There's the gallery and the trash
+	    //const $gallery = $( "#gallery" );
+	    
+	 
+	    // Let the gallery items be draggable
+	    $( "li", animals.gallery ).draggable({
+	      cancel: "a.ui-icon", // clicking an icon won't initiate dragging
+	      revert: "invalid", // when not dropped, the item will revert back to its initial position
+	      containment: "document",
+	      helper: "clone",
+	      cursor: "move",
+	       	 start: function( event, ui ) {
+	              $(this).addClass('original'); 
+	              $(ui.helper).addClass("animate")
+	         },
+	         stop: function( event, ui ) {
+	              $(this).removeClass('original');
+	              $(ui.helper).removeClass("animate") 
+	         }
+	    });
+	 
+	    // Let the trash be droppable, accepting the gallery items
+	    animals.trash.droppable({
+	      accept: "#gallery > li",
+	      classes: {
+	        "ui-droppable-active": "ui-state-highlight"
+	      },
+	      drop: function( event, ui ) {
+	        animals.deleteImage("trash", ui.draggable );
+	      }
+	    });
+
+	    $("#table").droppable({
+	      accept: "#gallery > li",
+	      classes: {
+	        "ui-droppable-active": "ui-state-highlight"
+	      },
+	      drop: function( event, ui ) {
+	        animals.deleteImage("table", ui.draggable );
+	      }
+	    });
+	 
+	    // Let the gallery be droppable as well, accepting items from the trash
+	    animals.gallery.droppable({
+	      accept: "#trash li, #table li",
+	      classes: {
+	        "ui-droppable-active": "custom-state-active"
+	      },
+	      drop: function( event, ui ) {
+	        animals.recycleImage( ui.draggable );
+	      }
+	    });
+
+	    // Resolve the icons behavior with event delegation
+	    $( "ul.gallery > li" ).on( "click", function( event ) {
+	      var $item = $( this ),
+	        $target = $( event.target );
+	 
+	      if ( $target.is( "a.ui-icon-trash" ) ) {
+	        animals.deleteImage( $item );
+	      } else if ( $target.is( "a.ui-icon-refresh" ) ) {
+	        animals.recycleImage( $item );
+	      }
+	 
+	      return false;
+	    });
+	},
+	deleteImage(id, $item ) {
+    	var $node = $("#"+id);
+      	$item.fadeOut(function() {
+        var $list = $( "ul", $node ).length ?
+          $( "ul", $node ) :
+          $( "<ul class='gallery ui-helper-reset'/>" ).appendTo( $node );
+ 
+        $item.find( "a.ui-icon-trash" ).remove();
+        $item.append( animals.recycle_icon ).appendTo( $list ).fadeIn(function() {
+          $item
+            .animate({ width: "48px" })
+            .find( "img" )
+              .animate({ height: "36px" });
+        });
+      });
+    },
+    recycleImage:function( $item ) {
+      $item.fadeOut(function() {
+        $item
+          .find( "a.ui-icon-refresh" )
+            .remove()
+          .end()
+          .css( "width", "96px")
+          .append( animals.trash_icon )
+          .find( "img" )
+            .css( "height", "72px" )
+          .end()
+          .appendTo( animals.gallery )
+          .fadeIn();
+      });
+    },
 	init: function(){
 		animals.master.clean.forEach(function(el){
 			animals.createCritter(el.name, el.image, "clean", el.letter);
 		})
 		animals.master.unclean.forEach(function(el){
 			animals.createCritter(el.name, el.image, "unclean", el.letter);
-		})
+		});
+		animals.initDragging();
 	},
 }
 

@@ -22,12 +22,15 @@ body{
 
 .ui-state-default {
   background-image: none;
-  background-color: #eee;
+  background-color: transparent;
+  border: 0;
 }
 
 .original {
 	opacity: 0.3;
 }
+
+/* droppied */
 
 #droppable { 
     width: 150px; 
@@ -78,19 +81,36 @@ body{
 }
 
 
- 
-#trash { min-height: 18em; padding: 1%; 
+.dropArea {
+    min-height: 18em; 
+    padding: 1%; 
 
-    h4 { line-height: 16px; margin: 0 0 0.4em; background: #333;
-        .ui-icon { float: left; }
+    img {
+        position: relative;
+        width: 100%;
     }
-}
+    h4 { 
+        line-height: 16px; 
+        margin: 0 0 0.4em; 
+        background: #333;
 
-  #table { min-height: 18em; padding: 1%; 
-
-    h4 { line-height: 16px; margin: 0 0 0.4em;  background: #333;
-    
-        .ui-icon { float: left; }
+        .ui-icon { 
+            float: left; 
+        }
     }
+
+    .gallery {
+        position: absolute;
+        top: 30px;
+    }
+
+    &#trash {
+
+    }
+    &#table {
+
+    }
+
 }
  
+

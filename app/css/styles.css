@@ -19,11 +19,13 @@ body {
 
 .ui-state-default {
   background-image: none;
-  background-color: #eee; }
+  background-color: transparent;
+  border: 0; }
 
 .original {
   opacity: 0.3; }
 
+/* droppied */
 #droppable {
   width: 150px;
   height: 150px;
@@ -68,22 +70,18 @@ body {
     width: 100%;
     cursor: move; }
 
-#trash {
+.dropArea {
   min-height: 18em;
   padding: 1%; }
-  #trash h4 {
+  .dropArea img {
+    position: relative;
+    width: 100%; }
+  .dropArea h4 {
     line-height: 16px;
     margin: 0 0 0.4em;
     background: #333; }
-    #trash h4 .ui-icon {
+    .dropArea h4 .ui-icon {
       float: left; }
-
-#table {
-  min-height: 18em;
-  padding: 1%; }
-  #table h4 {
-    line-height: 16px;
-    margin: 0 0 0.4em;
-    background: #333; }
-    #table h4 .ui-icon {
-      float: left; }
+  .dropArea .gallery {
+    position: absolute;
+    top: 30px; }
