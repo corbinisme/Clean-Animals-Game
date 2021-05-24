@@ -1,0 +1,89 @@
+body {
+  height: 100vh;
+  background-image: url("https://previews.123rf.com/images/tigatelu/tigatelu1404/tigatelu140400174/27656550-farm-cartoon-background.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  overflow: hidden; }
+
+/* general styles */
+.animalFont {
+  font-family: "animalsnormal";
+  font-size: 60px; }
+
+.ui-draggable-dragging {
+  z-index: 999;
+  border: 3px solid pink; }
+
+.animate {
+  transform: rotate(5deg); }
+
+.ui-state-default {
+  background-image: none;
+  background-color: #eee; }
+
+.original {
+  opacity: 0.3; }
+
+#droppable {
+  width: 150px;
+  height: 150px;
+  padding: 0.5em;
+  float: left;
+  margin: 10px; }
+
+#draggable, #draggable-nonvalid {
+  width: 150px;
+  height: 150px;
+  padding: 0.5em;
+  float: left;
+  margin: 10px 10px 10px 0; }
+
+#gallery {
+  min-height: 12em; }
+
+.gallery.custom-state-active {
+  background: #eee; }
+
+.gallery li {
+  float: left;
+  width: 96px;
+  padding: 0.4em;
+  margin: 0 0.4em 0.4em 0;
+  text-align: center;
+  width: 100px;
+  height: 100px; }
+  .gallery li.ui-widget-content {
+    transition: rotate ease 0.3s;
+    background-color: transparent;
+    border: none;
+    background-image: none; }
+  .gallery li h5 {
+    margin: 0 0 0.4em;
+    cursor: move; }
+  .gallery li a {
+    float: right; }
+    .gallery li a.ui-icon-zoomin {
+      float: left; }
+  .gallery li img {
+    width: 100%;
+    cursor: move; }
+
+#trash {
+  min-height: 18em;
+  padding: 1%; }
+  #trash h4 {
+    line-height: 16px;
+    margin: 0 0 0.4em;
+    background: #333; }
+    #trash h4 .ui-icon {
+      float: left; }
+
+#table {
+  min-height: 18em;
+  padding: 1%; }
+  #table h4 {
+    line-height: 16px;
+    margin: 0 0 0.4em;
+    background: #333; }
+    #table h4 .ui-icon {
+      float: left; }

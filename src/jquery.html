@@ -1,0 +1,253 @@
+<html>
+<head>
+<link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/black-tie/jquery-ui.css" />
+<title>
+Clean and Unclean Animals
+</title>
+<link rel="stylesheet" href="font/stylesheet.css" />
+<style>
+
+body{
+	height: 100vh;
+	background-image: url("https://previews.123rf.com/images/tigatelu/tigatelu1404/tigatelu140400174/27656550-farm-cartoon-background.jpg"); 
+	background-size: cover;
+	background-repeat: no-repeat;
+	overflow: hidden;
+}
+
+.animalFont {
+  font-family: "animalsnormal";
+  font-size: 60px;
+}
+
+.original {
+	opacity: 0.3;
+}
+  #droppable { width: 150px; height: 150px; padding: 0.5em; float: left; margin: 10px; }
+  #draggable, #draggable-nonvalid { width: 100px; height: 100px; padding: 0.5em; float: left; margin: 10px 10px 10px 0; }
+  </style>
+<!-- Latest compiled and minified CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+<style>
+  #gallery { min-height: 12em; }
+  .gallery.custom-state-active { background: #eee; }
+  .gallery li { 
+    float: left; 
+    width: 96px; 
+    padding: 0.4em; 
+    margin: 0 0.4em 0.4em 0; 
+    text-align: center; 
+    width: 100px;
+    height: 100px;
+  }
+  .gallery li h5 { margin: 0 0 0.4em; cursor: move; }
+  .gallery li a { float: right; }
+  .gallery li a.ui-icon-zoomin { float: left; }
+  .gallery li img { width: 100%; cursor: move; }
+ 
+  #trash { min-height: 18em; padding: 1%; }
+  #trash h4 { line-height: 16px; margin: 0 0 0.4em; background: #333;}
+  #trash h4 .ui-icon { float: left; }
+  #trash .gallery h5 { }
+
+  #table { min-height: 18em; padding: 1%; }
+  #table h4 { line-height: 16px; margin: 0 0 0.4em;  background: #333;}
+  #table h4 .ui-icon { float: left; }
+  #table .gallery h5 { }
+  .ui-draggable-dragging {
+  	z-index: 999;
+  	border: 3px solid pink;
+  }
+  .animate {
+  	transform: rotate(5deg);
+  }
+  .gallery li.ui-widget-content {
+  	transition: rotate ease 0.3s;
+    background-color: transparent;
+    border: none;
+    background-image: none;
+  }
+
+  .gallery li.animate {
+  	
+  }
+  .ui-state-default {
+    background-image: none;
+    background-color: #eee;
+  }
+  </style>
+</head>
+
+<body>
+	<div id="main">
+	<div class="row">
+		<div class="col-sm-3">
+ <div id="table" class="ui-widget-content ui-state-default">
+  <h4>Table</h4>
+</div>
+		</div>
+		<div class="col-sm-6">
+<div class="ui-widget ui-helper-clearfix" id="animalContainer">
+ 
+<ul id="gallery" class="gallery ui-helper-reset ui-helper-clearfix">
+ 
+</ul>
+</div>
+</div>
+<div class="col-sm-3">
+ 
+<div id="trash" class="ui-widget-content ui-state-default">
+  <h4>Trash</h4>
+</div>
+
+
+</div>
+</div>
+</div>
+
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+<script
+  src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+  integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
+  crossorigin="anonymous"></script>
+
+  <script src="animals.js"></script>
+  <script>
+  $( function() {
+ 
+    // There's the gallery and the trash
+    var $gallery = $( "#gallery" ),
+      $trash = $( "#trash" );
+ 
+    // Let the gallery items be draggable
+    $( "li", $gallery ).draggable({
+      cancel: "a.ui-icon", // clicking an icon won't initiate dragging
+      revert: "invalid", // when not dropped, the item will revert back to its initial position
+      containment: "document",
+      helper: "clone",
+      cursor: "move",
+       start: function( event, ui ) {
+              $(this).addClass('original'); 
+              $(ui.helper).addClass("animate")
+         },
+         stop: function( event, ui ) {
+              $(this).removeClass('original');
+              $(ui.helper).removeClass("animate") 
+         }
+    });
+ 
+    // Let the trash be droppable, accepting the gallery items
+    $trash.droppable({
+      accept: "#gallery > li",
+      classes: {
+        "ui-droppable-active": "ui-state-highlight"
+      },
+      drop: function( event, ui ) {
+        deleteImage("trash", ui.draggable );
+      }
+    });
+
+    $("#table").droppable({
+      accept: "#gallery > li",
+      classes: {
+        "ui-droppable-active": "ui-state-highlight"
+      },
+      drop: function( event, ui ) {
+        deleteImage("table", ui.draggable );
+      }
+    });
+ 
+    // Let the gallery be droppable as well, accepting items from the trash
+    $gallery.droppable({
+      accept: "#trash li, #table li",
+      classes: {
+        "ui-droppable-active": "custom-state-active"
+      },
+      drop: function( event, ui ) {
+        recycleImage( ui.draggable );
+      }
+    });
+ 
+    // Image deletion function
+    var recycle_icon = "<a href='link/to/recycle/script/when/we/have/js/off' title='Recycle this image' class='ui-icon ui-icon-refresh'>Recycle image</a>";
+    function deleteImage(id, $item ) {
+    	var $node = $("#"+id);
+      $item.fadeOut(function() {
+        var $list = $( "ul", $node ).length ?
+          $( "ul", $node ) :
+          $( "<ul class='gallery ui-helper-reset'/>" ).appendTo( $node );
+ 
+        $item.find( "a.ui-icon-trash" ).remove();
+        $item.append( recycle_icon ).appendTo( $list ).fadeIn(function() {
+          $item
+            .animate({ width: "48px" })
+            .find( "img" )
+              .animate({ height: "36px" });
+        });
+      });
+    }
+ 
+    // Image recycle function
+    var trash_icon = "<a href='link/to/trash/script/when/we/have/js/off' title='Delete this image' class='ui-icon ui-icon-trash'>Delete image</a>";
+    function recycleImage( $item ) {
+      $item.fadeOut(function() {
+        $item
+          .find( "a.ui-icon-refresh" )
+            .remove()
+          .end()
+          .css( "width", "96px")
+          .append( trash_icon )
+          .find( "img" )
+            .css( "height", "72px" )
+          .end()
+          .appendTo( $gallery )
+          .fadeIn();
+      });
+    }
+ 
+    // Image preview function, demonstrating the ui.dialog used as a modal window
+    function viewLargerImage( $link ) {
+      var src = $link.attr( "href" ),
+        title = $link.siblings( "img" ).attr( "alt" ),
+        $modal = $( "img[src$='" + src + "']" );
+ 
+      if ( $modal.length ) {
+        $modal.dialog( "open" );
+      } else {
+        var img = $( "<img alt='" + title + "' width='384' height='288' style='display: none; padding: 8px;' />" )
+          .attr( "src", src ).appendTo( "body" );
+        setTimeout(function() {
+          img.dialog({
+            title: title,
+            width: 400,
+            modal: true
+          });
+        }, 1 );
+      }
+    }
+ 
+    // Resolve the icons behavior with event delegation
+    $( "ul.gallery > li" ).on( "click", function( event ) {
+      var $item = $( this ),
+        $target = $( event.target );
+ 
+      if ( $target.is( "a.ui-icon-trash" ) ) {
+        deleteImage( $item );
+      } else if ( $target.is( "a.ui-icon-zoomin" ) ) {
+        viewLargerImage( $target );
+      } else if ( $target.is( "a.ui-icon-refresh" ) ) {
+        recycleImage( $item );
+      }
+ 
+      return false;
+    });
+  } );
+  </script>
+</body>
+</html>
