@@ -26,8 +26,19 @@ body{
   border: 0;
 }
 
+li.dragging {
+    transform: rotate(10deg);
+
+}
+
 .original {
 	opacity: 0.3;
+}
+.currentGhost {
+    position: absolute;
+    top: 5px;
+    left: 5px;
+    opacity: 0.9!important;
 }
 
 [data-draggable="target"]
@@ -116,7 +127,8 @@ body{
     }
     &:hover {
         >img {
-            opacity: 0.6;
+            opacity: 1;
+            
         }
     }
 }

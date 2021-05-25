@@ -74,26 +74,47 @@ var animals = {
 		document.addEventListener('dragstart', function(e)
 		{
 			//set the item reference to this element
-			item = e.target;
+
 			
-			console.log("start", e.target)
+			item = e.target;
+			e.target.style.opacity = 0;
+			e.dataTransfer.effectAllowed = 'move';
+			e.dataTransfer.setData("text/plain", e.target);
+			e.target.classList.add("dragging");
+
+			let crt = e.target.cloneNode(true);
+			crt.setAttribute("data-clones", "");
+			crt.classList.add("currentGhost");
+			//crt.style.display = "none"; /* or visibility: hidden, or any of the above */
+			document.body.appendChild(crt);
+			//e.dataTransfer.setDragImage(crt, 0, 0);
+			/*
+			var clone = e.target.cloneNode(true);
+			e.target.parentNode.appendChild(clone);
+			e.target.ghostDragger = clone;//SET A REFERENCE TO THE HELPER
+			clone.classList.add("dragging");
+			*/
+			
+			
+			//setTimeout(function() { el.classList.remove('dragging'); }, 0);
+
 			//we don't need the transfer data, but we have to define something
 			//otherwise the drop action won't work at all in firefox
 			//most browsers support the proper mime-type syntax, eg. "text/plain"
 			//but we have to use this incorrect syntax for the benefit of IE10+
-			e.dataTransfer.setData('text', '');
+			//e.dataTransfer.setData('text', '');
 		
 		}, false);
 
 		//dragstart event to initiate mouse dragging
 		document.addEventListener('dragend', function(e)
 		{
+			
 			//set the item reference to this element
 			item = e.target;
-			
-			console.log("stop dragging", e.target)
-			
-		
+			e.target.style.opacity = 1;
+			e.target.classList.remove("dragging")
+			document.querySelector(".currentGhost").remove();
 		}, false);
 	
 		//dragover event to allow the drag by preventing its default
@@ -105,7 +126,20 @@ var animals = {
 				e.preventDefault();
 			}
 		
-		}, false);	
+		}, false);
+		
+		
+		document.addEventListener('drag', function(e)
+		{
+			
+			let x = e.clientX;
+			let y = e.clientY;
+			const ghost = document.querySelector(".currentGhost");
+			ghost.style.top = (y - 50) + "px";
+			ghost.style.left = (x -15) + "px";
+
+		
+		}, false);
 	
 		//drop event to allow the element to be dropped into valid targets
 		document.addEventListener('drop', function(e)
