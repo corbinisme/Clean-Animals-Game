@@ -1,5 +1,6 @@
 var animals = {
 	container: document.getElementById("gallery"),
+	letters: ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'],
 	master: {
 		clean: [
 			{name:"goat", image: "https://pngimage.net/wp-content/uploads/2018/06/ram-animal-png-2.png"},
@@ -43,113 +44,9 @@ var animals = {
 		animals.container.append(li);
 
 	},
-	gallery: $( "#gallery" ),
-	trash: $( "#trash" ),
-	trash_icon: "<a href='link/to/trash/script/when/we/have/js/off' title='Delete this image' class='ui-icon ui-icon-trash'>Delete image</a>",
-	recycle_icon: "<a href='link/to/recycle/script/when/we/have/js/off' title='Recycle this image' class='ui-icon ui-icon-refresh'>Recycle image</a>",
-	
-	initDragging:function(){
-		// There's the gallery and the trash
-	    //const $gallery = $( "#gallery" );
-	    
-	 
-	    // Let the gallery items be draggable
-	    $( "li", animals.gallery ).draggable({
-	      cancel: "a.ui-icon", // clicking an icon won't initiate dragging
-	      revert: "invalid", // when not dropped, the item will revert back to its initial position
-	      containment: "document",
-	      helper: "clone",
-	      cursor: "move",
-	       	 start: function( event, ui ) {
-	              $(this).addClass('original'); 
-	              $(ui.helper).addClass("animate")
-	         },
-	         stop: function( event, ui ) {
-	              $(this).removeClass('original');
-	              $(ui.helper).removeClass("animate") 
-	         }
-	    });
-	 
-	    // Let the trash be droppable, accepting the gallery items
-	    animals.trash.droppable({
-	      accept: "#gallery > li",
-	      classes: {
-	        "ui-droppable-active": "ui-state-highlight"
-	      },
-	      drop: function( event, ui ) {
-	        animals.deleteImage("trash", ui.draggable );
-	      }
-	    });
-
-	    $("#table").droppable({
-	      accept: "#gallery > li",
-	      classes: {
-	        "ui-droppable-active": "ui-state-highlight"
-	      },
-	      drop: function( event, ui ) {
-	        animals.deleteImage("table", ui.draggable );
-	      }
-	    });
-	 
-	    // Let the gallery be droppable as well, accepting items from the trash
-	    animals.gallery.droppable({
-	      accept: "#trash li, #table li",
-	      classes: {
-	        "ui-droppable-active": "custom-state-active"
-	      },
-	      drop: function( event, ui ) {
-	        animals.recycleImage( ui.draggable );
-	      }
-	    });
-
-	    // Resolve the icons behavior with event delegation
-	    $( "ul.gallery > li" ).on( "click", function( event ) {
-	      var $item = $( this ),
-	        $target = $( event.target );
-	 
-	      if ( $target.is( "a.ui-icon-trash" ) ) {
-	        animals.deleteImage( $item );
-	      } else if ( $target.is( "a.ui-icon-refresh" ) ) {
-	        animals.recycleImage( $item );
-	      }
-	 
-	      return false;
-	    });
-	},
-	deleteImage(id, $item ) {
-    	var $node = $("#"+id);
-      	$item.fadeOut(function() {
-        var $list = $( "ul", $node ).length ?
-          $( "ul", $node ) :
-          $( "<ul class='gallery ui-helper-reset'/>" ).appendTo( $node );
- 
-        $item.find( "a.ui-icon-trash" ).remove();
-        $item.append( animals.recycle_icon ).appendTo( $list ).fadeIn(function() {
-          $item
-            .animate({ width: "48px" })
-            .find( "img" )
-              .animate({ height: "36px" });
-        });
-      });
-    },
-    recycleImage:function( $item ) {
-      $item.fadeOut(function() {
-        $item
-          .find( "a.ui-icon-refresh" )
-            .remove()
-          .end()
-          .css( "width", "96px")
-          .append( animals.trash_icon )
-          .find( "img" )
-            .css( "height", "72px" )
-          .end()
-          .appendTo( animals.gallery )
-          .fadeIn();
-      });
-    },
 	initDragDrop: function(){
 		//exclude older browsers by the features we need them to support
-     //and legacy opera explicitly so we don't waste time on a dead browser
+     	//and legacy opera explicitly so we don't waste time on a dead browser
      if
      (
          !document.querySelectorAll 
@@ -164,69 +61,84 @@ var animals = {
      for(var 
          items = document.querySelectorAll('[data-draggable="item"]'), 
          len = items.length, 
-         i = 0; i < len; i ++)
-     {
-         items[i].setAttribute('draggable', 'true');
-     }
+         i = 0; i < len; i ++){
+			items[i].setAttribute('draggable', 'true');
+		 }
  
-     //variable for storing the dragging item reference 
-     //this will avoid the need to define any transfer data 
-     //which means that the elements don't need to have IDs 
-     var item = null;
- 
-     //dragstart event to initiate mouse dragging
-     document.addEventListener('dragstart', function(e)
-     {
-         //set the item reference to this element
-         item = e.target;
-         
-         //we don't need the transfer data, but we have to define something
-         //otherwise the drop action won't work at all in firefox
-         //most browsers support the proper mime-type syntax, eg. "text/plain"
-         //but we have to use this incorrect syntax for the benefit of IE10+
-         e.dataTransfer.setData('text', '');
-     
-     }, false);
- 
-     //dragover event to allow the drag by preventing its default
-     //ie. the default action of an element is not to allow dragging 
-     document.addEventListener('dragover', function(e)
-     {
-         if(item)
-         {
-             e.preventDefault();
-         }
-     
-     }, false);	
- 
-     //drop event to allow the element to be dropped into valid targets
-     document.addEventListener('drop', function(e)
-     {
-         //if this element is a drop target, move the item here 
-         //then prevent default to allow the action (same as dragover)
-         if(e.target.getAttribute('data-draggable') == 'target')
-         {
-             e.target.appendChild(item);
-             
-             e.preventDefault();
-         }
-     
-     }, false);
-     
-     //dragend event to clean-up after drop or abort
-     //which fires whether or not the drop target was valid
-     document.addEventListener('dragend', function(e)
-     {
-         item = null;
-     
-     }, false);
+		//variable for storing the dragging item reference 
+		//this will avoid the need to define any transfer data 
+		//which means that the elements don't need to have IDs 
+		var item = null;
+		
+		//dragstart event to initiate mouse dragging
+		document.addEventListener('dragstart', function(e)
+		{
+			//set the item reference to this element
+			item = e.target;
+			
+			console.log("start", e.target)
+			//we don't need the transfer data, but we have to define something
+			//otherwise the drop action won't work at all in firefox
+			//most browsers support the proper mime-type syntax, eg. "text/plain"
+			//but we have to use this incorrect syntax for the benefit of IE10+
+			e.dataTransfer.setData('text', '');
+		
+		}, false);
+
+		//dragstart event to initiate mouse dragging
+		document.addEventListener('dragend', function(e)
+		{
+			//set the item reference to this element
+			item = e.target;
+			
+			console.log("stop dragging", e.target)
+			
+		
+		}, false);
+	
+		//dragover event to allow the drag by preventing its default
+		//ie. the default action of an element is not to allow dragging 
+		document.addEventListener('dragover', function(e)
+		{
+			if(item)
+			{
+				e.preventDefault();
+			}
+		
+		}, false);	
+	
+		//drop event to allow the element to be dropped into valid targets
+		document.addEventListener('drop', function(e)
+		{
+			//if this element is a drop target, move the item here 
+			//then prevent default to allow the action (same as dragover)
+			if(e.target.getAttribute('data-draggable') == 'target')
+			{
+				e.target.appendChild(item);
+				
+				e.preventDefault();
+			}
+		
+		}, false);
+		
+		//dragend event to clean-up after drop or abort
+		//which fires whether or not the drop target was valid
+		document.addEventListener('dragend', function(e)
+		{
+			item = null;
+		
+		}, false);
 	},
 	init: function(){
 		animals.master.clean.forEach(function(el){
-			animals.createCritter(el.name, el.image, "clean", el.letter);
+			//animals.createCritter(el.name, el.image, "clean", el.letter);
+		});
+		animals.letters.forEach(function(l){
+			let cleanUnclean = "clean";
+			animals.createCritter(l, null, cleanUnclean, l)
 		})
 		animals.master.unclean.forEach(function(el){
-			animals.createCritter(el.name, el.image, "unclean", el.letter);
+			//animals.createCritter(el.name, el.image, "unclean", el.letter);
 		});
 		animals.initDragDrop();
 	},

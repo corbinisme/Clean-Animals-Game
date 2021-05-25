@@ -1,6 +1,6 @@
 <html>
   <head>
-  <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/black-tie/jquery-ui.css" />
+
   <title>
     Clean and Unclean Animals
   </title>
@@ -14,19 +14,18 @@
     <div class="row">
     		<div class="col-sm-3">
           <div class="table droppableArea">
-          <img src="img/table-svgrepo-com.svg" />
-          <ol id="table"  data-draggable="target" class="dropArea ui-widget-content ui-state-default">
-            
-            
-          </ol>
+            <img  class="background"  src="img/table-svgrepo-com.svg" />
+            <ol id="table"  data-draggable="target" class="gallery dropArea ui-widget-content ui-state-default">
+              
+              
+            </ol>
           </div>
     		</div>
     		<div class="col-sm-6">
           <div class="ui-widget ui-helper-clearfix" id="animalContainer">
 
-            <ol id="gallery"  data-draggable="target" class="gallery">
-              <li data-draggable="item">Item 4</li>
-              <li data-draggable="item">Item 5</li>
+            <ol id="gallery"  data-draggable="target" class="gallery dropArea">
+              
             </ol>
 
            
@@ -34,20 +33,15 @@
         </div>
         <div class="col-sm-3">
           <div class="trash droppableArea">
-          <img src="img/trash.svg" />
-          <ol id="trash"  data-draggable="target" class="dropArea ui-widget-content ui-state-default">
-          
-          </ol>
+            <img class="background" src="img/trash.svg" />
+            <ol id="trash"  data-draggable="target" class="gallery dropArea ui-widget-content ui-state-default">
             
+            </ol>
           </div>
           
         </div>
     </div>
   </div>
-
-
-<script src="js/jquery-ui/external/jquery/jquery.js"></script>
-<script src="js/jquery-ui/jquery-ui.js"></script>
 
 <script src="js/animals.js"></script>
 

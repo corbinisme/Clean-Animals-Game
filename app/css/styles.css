@@ -74,6 +74,8 @@ body {
     background-color: transparent;
     border: none;
     background-image: none; }
+  .gallery li img {
+    pointer-events: none; }
   .gallery li h5 {
     margin: 0 0 0.4em;
     cursor: move; }

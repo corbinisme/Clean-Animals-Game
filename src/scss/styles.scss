@@ -93,6 +93,10 @@ body{
         background-image: none;
         }
 
+        img {
+            pointer-events: none;
+        }
+
             h5 { margin: 0 0 0.4em; cursor: move; }
             a { 
                 float: right; 
@@ -142,6 +146,7 @@ body{
             float: left; 
         }
     }
+   
 
     .gallery {
         position: absolute;
