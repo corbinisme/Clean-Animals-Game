@@ -22,10 +22,18 @@ var animals = {
 
 		]
 	},
+	audio: {
+		effects: [
+			{name:"chirp", id: "chirpy", src: "./audio/chirp.mp3"},
+			{name:"pop", id: "poppy", src: "./audio/pop.mp3"}
+		],
+		players: []
+	},
 	createCritter:function(name, image, status, letter){
 		let li = document.createElement("li");
 		li.classList.add("ui-widget-content");
 		li.setAttribute("data-draggable","item");
+		li.setAttribute("data-id",letter);
 		let header = document.createElement("h5");
 		header.innerHTML = name;
 		header.classList.add("ui-widget-header");
@@ -85,24 +93,12 @@ var animals = {
 			let crt = e.target.cloneNode(true);
 			crt.setAttribute("data-clones", "");
 			crt.classList.add("currentGhost");
-			//crt.style.display = "none"; /* or visibility: hidden, or any of the above */
 			document.body.appendChild(crt);
-			//e.dataTransfer.setDragImage(crt, 0, 0);
-			/*
-			var clone = e.target.cloneNode(true);
-			e.target.parentNode.appendChild(clone);
-			e.target.ghostDragger = clone;//SET A REFERENCE TO THE HELPER
-			clone.classList.add("dragging");
-			*/
-			
-			
-			//setTimeout(function() { el.classList.remove('dragging'); }, 0);
 
-			//we don't need the transfer data, but we have to define something
-			//otherwise the drop action won't work at all in firefox
-			//most browsers support the proper mime-type syntax, eg. "text/plain"
-			//but we have to use this incorrect syntax for the benefit of IE10+
-			//e.dataTransfer.setData('text', '');
+			document.getElementById("poppy").play();
+
+			console.log("make sound!", e.target.getAttribute("data-id"))
+
 		
 		}, false);
 
@@ -163,6 +159,15 @@ var animals = {
 		
 		}, false);
 	},
+	createAudio: function(dat){
+		let aud = document.createElement("audio");
+
+		aud.src = dat.src;
+		aud.setAttribute("id", dat.id);
+		aud.setAttribute("data-name", dat.name);
+		aud.setAttribute("volume", 0.1);
+		document.querySelector("body").append(aud)
+	},
 	init: function(){
 		animals.master.clean.forEach(function(el){
 			//animals.createCritter(el.name, el.image, "clean", el.letter);
@@ -175,6 +180,11 @@ var animals = {
 			//animals.createCritter(el.name, el.image, "unclean", el.letter);
 		});
 		animals.initDragDrop();
+
+
+		animals.audio.effects.forEach(function(el){
+			animals.createAudio(el);
+		});
 	},
 }
 
