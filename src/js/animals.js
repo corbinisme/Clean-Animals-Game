@@ -3,24 +3,23 @@ var animals = {
 	letters: ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'],
 	master: {
 		clean: [
-			{name:"goat", image: "https://pngimage.net/wp-content/uploads/2018/06/ram-animal-png-2.png"},
-			{name:"deer", letter:"i"},
-			{name:"chicken", letter: "a"},
-			{name:"cow", letter: "b"},
-			{name:"giraffe", image: "http://pngimg.com/uploads/giraffe/giraffe_PNG13518.png"},
-			{name:"grasshopper", letter: "c"}
+			'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o'
 		],
 		unclean: [
-			{name:"pig", letter: "d" },
-			{name:"bear",image: "http://pluspng.com/img-png/wild-animals-png-wildlife-encounter-diagnosing-and-managing-infectious-disease-foundation-funded-studies-improved-knowledge-of-infectious-disease-risk-400.png"},
-			{name:"hippo", image: "http://pngimg.com/uploads/hippo/hippo_PNG16.png"},
-			{name:"shrimp", letter: "e"},
-			{name:"horse", letter: "f"},
-			{name:"bat" , letter: "g"},
-			{name:"cockroach", letter: "h"},
-			{name:"hawk", letter: "i"},
+			'p','q','r','s','t','u','v','w','x','y','z'
 
 		]
+	},
+	state: {
+		progress:{
+			clean: 0,
+			unclean: 0,
+			mistakes: 0
+		}
+	},
+	elems: {
+		scoreGood: document.getElementById("goodScore"),
+		scoreBad:  document.getElementById("badScore"),
 	},
 	audio: {
 		effects: [
@@ -142,11 +141,34 @@ var animals = {
 		{
 			//if this element is a drop target, move the item here 
 			//then prevent default to allow the action (same as dragover)
+
+			// get the target and see which one it is
+			let id = e.target.id;
+			let itemID = item.getAttribute("data-id");
 			if(e.target.getAttribute('data-draggable') == 'target')
 			{
-				e.target.appendChild(item);
+				
 				
 				e.preventDefault();
+				if(id=="table"){
+					if(animals.master.clean.includes(itemID)){
+						animals.state.progress.clean +=1;
+						e.target.appendChild(item);
+					} else {
+						alert("Nope!")
+					}
+
+				} else if(id=="trash"){
+					if(animals.master.unclean.includes(itemID)){
+						animals.state.progress.unclean +=1;
+						e.target.appendChild(item);
+					} else {
+						alert("Nope!")
+					}
+				} else {
+
+				}
+				animals.updateScore()
 			}
 		
 		}, false);
@@ -185,6 +207,10 @@ var animals = {
 		animals.audio.effects.forEach(function(el){
 			animals.createAudio(el);
 		});
+	},
+	updateScore: function(){
+		animals.elems.scoreGood.innerHTML = animals.state.progress.clean;
+		animals.elems.scoreBad.innerHTML = animals.state.progress.unclean;
 	},
 }
 
