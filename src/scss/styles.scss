@@ -10,6 +10,7 @@ body{
 .animalFont {
   font-family: "animalsnormal";
   font-size: 60px;
+  text-shadow: 0 0 12px #f545d7;
 }
 
 .ui-draggable-dragging {
@@ -65,6 +66,29 @@ li.dragging {
 	line-height:1.3;
 }
 
+
+
+#intro {
+    display: flex;
+    position: absolute;
+    top: -110vh;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(255,255,255,0.9);
+    transition: all ease .3s;
+    align-items: center;
+    align-content: center;
+    z-index: 100;
+    &.shown{
+        top:0;
+    }
+    h1 {
+        text-align: center;
+        flex: 1 100%;
+        width: 100vw;
+    }
+}
 /* droppied */
 
 #droppable { 
@@ -85,6 +109,11 @@ li.dragging {
 #gallery { 
     min-height: 12em; 
     height: 100vh;
+
+    li.hide {
+        position: absolute;
+        top: -999em;
+    }
 }
 .gallery.custom-state-active { background: #eee; }
 .gallery {
@@ -102,6 +131,8 @@ li.dragging {
         border: none;
         background-image: none;
         }
+
+       
 
         img {
             pointer-events: none;
@@ -121,11 +152,30 @@ li.dragging {
 
 .wrapper {
     height: calc(100vh - 50px);
+    .source {
+        flex: 1 99%;
+
+        li {
+            &.selected {
+                width: 100%;
+                text-align: center;
+                .animalFont {
+                    font-size: 180px;
+                    
+                }
+            }
+        }
+    }
     .column {
         .droppableArea {
             background-size: contain;
             background-position: center center;
             background-repeat: no-repeat;
+
+            li:not(:first-child) {
+                margin-left: -50px;
+            }
+           
         }
 
         &.dropTop {
@@ -187,6 +237,13 @@ footer.score {
     z-index: 67;
     margin: 0;
     padding: 0;
+
+    &:not(#gallery){
+        &.hovering {
+            background-color: rgba(255,255,255,0.4);
+        }
+    }
+    
     
     ol {
         
@@ -247,4 +304,13 @@ footer.score {
     #gallery{
         height: calc(100vh - 50px);
     }
+    .wrapper {
+        .source {
+            li.selected {
+                .animalFont {
+                    line-height: 85vh;
+                }
+            }
+        }
+    } 
 }

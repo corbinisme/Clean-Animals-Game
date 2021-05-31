@@ -116,6 +116,30 @@ var animals = {
 		//ie. the default action of an element is not to allow dragging 
 		document.addEventListener('dragover', function(e)
 		{
+
+
+			if(e.target.classList.contains("dropArea")){
+				console.log(e.target);
+				if(e.target.classList.contains("hovering")){
+					// already has it
+				} else {
+					e.target.classList.add("hovering")
+				}
+			}
+			
+			if(item)
+			{
+				e.preventDefault();
+			}
+		
+		}, false);
+
+
+		document.addEventListener('dragleave', function(e)
+		{
+			if(e.target.classList.contains("hovering")){
+				e.target.classList.remove("hovering")
+			} 
 			if(item)
 			{
 				e.preventDefault();
@@ -143,6 +167,11 @@ var animals = {
 			//then prevent default to allow the action (same as dragover)
 
 			// get the target and see which one it is
+
+			if(e.target.classList.contains("hovering")){
+				e.target.classList.remove("hovering")
+			} 
+
 			let id = e.target.id;
 			let itemID = item.getAttribute("data-id");
 			if(e.target.getAttribute('data-draggable') == 'target')
@@ -154,6 +183,7 @@ var animals = {
 					if(animals.master.clean.includes(itemID)){
 						animals.state.progress.clean +=1;
 						e.target.appendChild(item);
+						window.setTimeout(function(){animals.showRandomCritter()}, 600)
 					} else {
 						alert("Nope!")
 					}
@@ -162,6 +192,7 @@ var animals = {
 					if(animals.master.unclean.includes(itemID)){
 						animals.state.progress.unclean +=1;
 						e.target.appendChild(item);
+						window.setTimeout(function(){animals.showRandomCritter()}, 600)
 					} else {
 						alert("Nope!")
 					}
@@ -180,6 +211,19 @@ var animals = {
 			item = null;
 		
 		}, false);
+	},
+	getRandomNum: function(min, max){
+		return Math.floor(Math.random() * (max - min) + min);
+	},
+	showRandomCritter: function(){
+		let max = document.querySelectorAll(".source li").length;
+		let indexCritter = animals.getRandomNum(1, max);
+		let selector = document.querySelector("#gallery li:nth-child(" + indexCritter + ")");
+		if(selector){
+			selector.classList.remove("hide");
+			selector.classList.add("selected")
+		}
+
 	},
 	createAudio: function(dat){
 		let aud = document.createElement("audio");
@@ -207,6 +251,20 @@ var animals = {
 		animals.audio.effects.forEach(function(el){
 			animals.createAudio(el);
 		});
+
+		// set critter class
+		let animalList = document.querySelectorAll("#gallery li");
+
+		if(animalList.length){
+			animalList.forEach(function(el, idx){
+				el.classList.add("hide")
+			})
+		}
+		window.setTimeout(function(){
+			document.getElementById("intro").classList.remove("shown");
+			animals.showRandomCritter();
+
+		}, 800)
 	},
 	updateScore: function(){
 		animals.elems.scoreGood.innerHTML = animals.state.progress.clean;
