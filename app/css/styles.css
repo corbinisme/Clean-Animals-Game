@@ -119,7 +119,7 @@ li.dragging {
     cursor: move; }
 
 .wrapper {
-  height: calc(100vh - 50px); }
+  height: 100vh; }
   .wrapper .source {
     flex: 1 99%; }
     .wrapper .source li.selected {
@@ -141,7 +141,8 @@ li.dragging {
 footer.score {
   background: rgba(255, 255, 255, 0.6);
   height: 50px;
-  line-height: 50px; }
+  line-height: 50px;
+  display: none; }
   footer.score h3 {
     margin: 0;
     line-height: 50px; }
@@ -193,7 +194,7 @@ footer.score {
     top: 30px; }
 
 .column {
-  height: calc(25vh - 25px);
+  height: 25vh;
   width: 100%;
   border: 1px solid pink;
   display: flex; }
@@ -201,19 +202,22 @@ footer.score {
     max-width: 200px;
     margin: auto; }
 
-#gallery {
-  height: 50vh; }
+#gallery, .wrapper .source li.selected {
+  height: 50vh;
+  overflow: hidden; }
 
 @media all and (min-width: 800px) {
   .wrapper {
     display: flex; }
   .column {
-    height: calc(100vh - 50px);
+    height: 100vh;
     width: 20vw;
     flex: 1 202px;
     max-width: 202px;
     min-width: 202px; }
   #gallery {
-    height: calc(100vh - 50px); }
-  .wrapper .source li.selected .animalFont {
-    line-height: 85vh; } }
+    height: 100vh; }
+  .wrapper .source li.selected {
+    height: 100vh; }
+    .wrapper .source li.selected .animalFont {
+      line-height: 85vh; } }

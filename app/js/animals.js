@@ -264,7 +264,7 @@ var animals = {
 			document.getElementById("intro").classList.remove("shown");
 			animals.showRandomCritter();
 
-		}, 800)
+		}, 100)
 	},
 	updateScore: function(){
 		animals.elems.scoreGood.innerHTML = animals.state.progress.clean;
