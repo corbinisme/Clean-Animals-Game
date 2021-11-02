@@ -1,0 +1,37 @@
+<body style="margin:0px;height:700px;" onload="init();">
+    <canvas id="graphCanvas" ondrop="drop(event)" ondragover="allowDrop(event)" height=300 width=300 style="border:1px solid #000000;"></canvas>
+    <img id="img1" 
+        src="http://static.tumblr.com/vcbmwcj/foumiteqs/arrow_up_alt1.svg" 
+        draggable="true" 
+        onmousedown="get_pos(event)" 
+        ondragstart="drag(event)"/>
+</body>
+<script>
+    function init() {
+    var canvas = document.getElementById("graphCanvas");
+    var context = canvas.getContext("2d");
+    
+    context.lineWidth = 2;
+}
+var pos;
+function allowDrop(ev) {
+    ev.preventDefault();
+}
+function get_pos(ev){
+    pos = [ev.pageX, ev.pageY];
+}
+function drag(ev) {
+    ev.dataTransfer.setData("Text",ev.target.id);
+}
+
+function drop(ev) {
+    ev.preventDefault();
+    var offset = ev.dataTransfer.getData("text/plain").split(',');
+    var data=ev.dataTransfer.getData("Text");
+    
+    var img = canvas = document.getElementById("img1");
+    var dx = pos[0] - img.offsetLeft;
+    var dy = pos[1] - img.offsetTop;
+ document.getElementById("graphCanvas").getContext("2d").drawImage(document.getElementById(data), ev.pageX - dx, ev.pageY - dy);
+}
+</script>
