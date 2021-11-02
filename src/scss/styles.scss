@@ -1,7 +1,8 @@
 body{
 	height: 100vh;
 	background-image: url("https://previews.123rf.com/images/tigatelu/tigatelu1404/tigatelu140400174/27656550-farm-cartoon-background.jpg"); 
-	background-size: cover;
+	background-image: url("../img/background.png");
+    background-size: cover;
 	background-repeat: no-repeat;
 	overflow: hidden;
 }
@@ -127,9 +128,24 @@ li.dragging {
 
         &.ui-widget-content {
             transition: rotate ease 0.3s;
-        background-color: transparent;
-        border: none;
-        background-image: none;
+            background-color: transparent;
+            border: none;
+            background-image: none;
+
+            flex-wrap: wrap;
+            display: flex;
+            align-items: center;
+            align-content: center;
+
+            h5 {
+                flex: 1 100%;
+                text-align: center;
+            }
+            .animalFont {
+                flex: 1 100%;
+                text-align: center;
+            }
+           
         }
 
        
@@ -160,8 +176,16 @@ li.dragging {
                 width: 100%;
                 text-align: center;
                 .animalFont {
-                    font-size: 180px;
+                    font-size: 16rem;
                     
+                }
+                h5 {
+                    position: absolute;
+                    top: 0px;
+                    font-size: 5rem;
+                    color: #fff;
+                    text-align: center;
+                    width: 100%;
                 }
             }
         }
@@ -175,17 +199,40 @@ li.dragging {
             li:not(:first-child) {
                 margin-left: -50px;
             }
+
+            li {
+                &.offscreen {
+                    transition: all ease 0.3s;
+                    
+                    
+                }
+                &.removed {
+                    transform: translateY(-100vh);
+                    
+                }
+            }
+
+            &.celebrate {
+                border-color:green;
+                &::before {
+                    content: "";
+                    position: absolute;
+                    height: 100vh;
+                    width: 50px;
+                    background-image: url("../img/star.svg");
+                }
+            }
            
         }
 
         &.dropTop {
             .droppableArea {
-                background-image: url("../img/table-svgrepo-com.svg")
+                background-image: url("../img/thumbup.svg")
             }
         }
         &.dropBot {
             .droppableArea {
-                background-image: url("../img/trash.svg");
+                background-image: url("../img/thumbdown.svg");
             }
         }
     }
@@ -229,6 +276,7 @@ footer.score {
             
         }
     }
+
 
 }
 
@@ -281,7 +329,7 @@ footer.score {
 .column {
     height: 25vh;
     width: 100%;
-    border: 1px solid pink;
+    border: 2px dashed #ccc;
     display: flex;
     img {
         max-width: 200px;
@@ -311,7 +359,7 @@ footer.score {
             li.selected {
                 height: 100vh;
                 .animalFont {
-                    line-height: 85vh;
+                   font-size: 46rem;
                 }
             }
         }

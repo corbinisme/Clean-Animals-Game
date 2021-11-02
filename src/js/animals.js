@@ -3,10 +3,10 @@ var animals = {
 	letters: ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'],
 	master: {
 		clean: [
-			'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o'
+			'i','j','l','n','q'
 		],
 		unclean: [
-			'p','q','r','s','t','u','v','w','x','y','z'
+			'a','b','c','d','e','f','g','h','k','m','o','p','r','s','t','u','v','w','x','y','z'
 
 		]
 	},
@@ -27,6 +27,14 @@ var animals = {
 			{name:"pop", id: "poppy", src: "./audio/pop.mp3"}
 		],
 		players: []
+	},
+	victory: function(tar){
+		let target = tar.closest(".droppableArea");
+		console.log("victory", tar)
+		target.classList.add("celebrate");
+		window.setTimeout(function(){
+			target.classList.remove("celebrate");
+		},800)
 	},
 	createCritter:function(name, image, status, letter){
 		let li = document.createElement("li");
@@ -119,7 +127,7 @@ var animals = {
 
 
 			if(e.target.classList.contains("dropArea")){
-				console.log(e.target);
+
 				if(e.target.classList.contains("hovering")){
 					// already has it
 				} else {
@@ -183,6 +191,8 @@ var animals = {
 					if(animals.master.clean.includes(itemID)){
 						animals.state.progress.clean +=1;
 						e.target.appendChild(item);
+						animals.sendCritterAway(e.target, itemID);
+						animals.victory(e.target)
 						window.setTimeout(function(){animals.showRandomCritter()}, 600)
 					} else {
 						alert("Nope!")
@@ -192,6 +202,8 @@ var animals = {
 					if(animals.master.unclean.includes(itemID)){
 						animals.state.progress.unclean +=1;
 						e.target.appendChild(item);
+						animals.sendCritterAway(e.target, itemID);
+						animals.victory(e.target)
 						window.setTimeout(function(){animals.showRandomCritter()}, 600)
 					} else {
 						alert("Nope!")
@@ -199,6 +211,7 @@ var animals = {
 				} else {
 
 				}
+				
 				animals.updateScore()
 			}
 		
@@ -225,6 +238,21 @@ var animals = {
 		}
 
 	},
+	sendCritterAway: function(elem, id){
+
+		let critter = elem.querySelector("li[data-id='" + id + "']");
+		window.setTimeout(function(){
+			critter.classList.add("offscreen");
+			window.setTimeout(function(){
+				critter.classList.add("removed");
+				window.setTimeout(function(){
+					critter.remove()
+				}, 300)
+			}, 200)
+		},300)
+		
+
+	},
 	createAudio: function(dat){
 		let aud = document.createElement("audio");
 
@@ -235,16 +263,13 @@ var animals = {
 		document.querySelector("body").append(aud)
 	},
 	init: function(){
-		animals.master.clean.forEach(function(el){
-			//animals.createCritter(el.name, el.image, "clean", el.letter);
-		});
+		
 		animals.letters.forEach(function(l){
 			let cleanUnclean = "clean";
-			animals.createCritter(l, null, cleanUnclean, l)
+			let name = animalMeta[l].name;
+			animals.createCritter(name, null, cleanUnclean, l)
 		})
-		animals.master.unclean.forEach(function(el){
-			//animals.createCritter(el.name, el.image, "unclean", el.letter);
-		});
+		
 		animals.initDragDrop();
 
 
